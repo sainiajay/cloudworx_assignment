@@ -1,5 +1,8 @@
 import React from "react"
+import Scene from "./../components/SceneComponent"
 
-export default function Home() {
-  return <div>Hello world!</div>
+const Home = () => {
+  return <Scene />
 }
+
+export default Home;
