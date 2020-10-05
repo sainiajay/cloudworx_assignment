@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import * as THREE from "three"
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import { GLTFLoader }  from 'three/examples/jsm/loaders/GLTFLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
-const initScene = (canvas) => {
+const initScene = (canvas, setLoaded) => {
+    if(!canvas) {
+        return;
+    }
     //Setup Rederer
     const renderer = new THREE.WebGLRenderer({
         canvas,
@@ -66,6 +69,7 @@ const initScene = (canvas) => {
     
     //Callbacks
     const onAssetLoad = ( gltf ) => {
+        setLoaded(true);
         console.log('loaded', gltf);
         const model = gltf.scene;
         model.position.set( 1, 1, 0 );
@@ -108,9 +112,14 @@ const initScene = (canvas) => {
 }
 
 const Scene = () => {
+    const  [isLoaded, setLoaded] = useState(false);
     return (
         <div>
-          <canvas id="three-canvas" ref={element => initScene(element)} />
+        {
+            !isLoaded && (<h2>Loading...</h2>)
+        }
+          <canvas
+            ref={element => initScene(element, setLoaded)} />
         </div>
     )
 }
